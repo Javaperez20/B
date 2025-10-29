@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visor de Casos — Buscar por caso</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- SheetJS para leer Excel -->
+  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  <!-- Fuse.js para búsqueda difusa -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="title-area">
+      <div class="title-main">Visor de Casos</div>
+      <div class="title-sub">Buscar por caso</div>
+    </div>
+
+    <div class="search-area" role="search">
+      <label for="caseSearch" class="search-label">Buscar por caso</label>
+      <div class="search-controls">
+        <input id="caseSearch" type="search" placeholder="Escribe texto y presiona Enter" autocomplete="off" />
+        <button id="clearBtn" class="btn ghost" title="Limpiar búsqueda">Limpiar</button>
+        <label class="fuzzy-toggle">
+          <input id="fuzzyCheckbox" type="checkbox" />
+          <span class="fuzzy-label">Fuzzy</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" role="main">
+    <!-- Results rendered as card list (no internal scrollbars) -->
+    <section id="resultsSection" class="results-section" aria-label="Resultados">
+      <div id="cardsContainer" class="cards-container" aria-live="polite">
+        <!-- cards generated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Detail appears below the cards -->
+    <section id="detailSection" class="detail-section hidden" aria-hidden="true">
+      <div class="detail-card">
+        <div class="detail-header">
+          <h2>Detalle del caso</h2>
+          <button id="closeDetail" class="btn ghost">Cerrar</button>
+        </div>
+        <div id="detailContainer" class="detail-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

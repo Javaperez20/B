@@ -1,0 +1,133 @@
+:root{
+  --bg-1: #05060a;        /* very dark */
+  --bg-2: #071229;        /* dark navy */
+  --panel: #0f1724;       /* card background base */
+  --muted: #bfc7cf;       /* muted text */
+  --text: #ffffff;        /* main text */
+  --border: #d6d6d8;      /* light gray border for inputs/cards */
+  --accent-1: #0b5fa8;    /* deep blue */
+  --accent-2: #163a66;    /* darker blue */
+  --card-radius: 12px;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-size: 18px; /* slightly larger base */
+  --gap: 16px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  line-height:1.45;
+  overflow-y:auto; /* page scroll allowed; no internal scrollbars */
+}
+
+/* Topbar */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:18px 26px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+}
+.title-area{display:flex;flex-direction:column}
+.title-main{font-weight:700;font-size:20px;color:var(--text)}
+.title-sub{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* Search area */
+.search-area{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.search-label{font-size:14px;color:var(--muted)}
+.search-controls{display:flex;align-items:center;gap:10px}
+.search-controls input[type="search"]{
+  width:520px;
+  max-width:64vw;
+  min-width:240px;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  color:var(--text);
+  font-size:16px;
+  outline:none;
+}
+.search-controls input::placeholder{color:rgba(255,255,255,0.32)}
+.btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent}
+.fuzzy-toggle{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:600}
+.fuzzy-toggle input{width:16px;height:16px}
+
+/* Layout main - use single column stack: cards then detail */
+.main{max-width:1200px;margin:24px auto;padding:0 20px;display:flex;flex-direction:column;gap:20px}
+
+/* Cards container - no internal scrollbars */
+.cards-container{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  /* Ensure full visibility; no overflow styling that adds scrollbars */
+  overflow:visible;
+}
+
+/* Individual row-card styles (alternating tones) */
+.card-row{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+}
+.card-row:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,0.5)}
+
+/* Use alternating subtle backgrounds */
+.cards-container .card-row:nth-child(4n+1){ background: linear-gradient(180deg, rgba(11,95,168,0.06), rgba(3,24,50,0.02)); }
+.cards-container .card-row:nth-child(4n+2){ background: linear-gradient(180deg, rgba(10,74,120,0.04), rgba(3,16,34,0.01)); }
+.cards-container .card-row:nth-child(4n+3){ background: linear-gradient(180deg, rgba(16,42,68,0.02), rgba(3,16,34,0.01)); }
+.cards-container .card-row:nth-child(4n+4){ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(3,16,34,0.00)); }
+
+/* Row content layout: show first 8 columns as grid */
+.row-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns across, adapt to show A..H */
+  gap:10px 16px;
+  align-items:start;
+}
+.row-field{display:flex;flex-direction:column}
+.row-field .label{font-size:13px;color:var(--muted);font-weight:700}
+.row-field .value{font-size:15px;color:var(--text);margin-top:6px;white-space:pre-wrap;}
+
+/* Detail section (appears below cards) */
+.detail-section{padding:0}
+.detail-card{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+}
+.detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.detail-container dl{display:grid;grid-template-columns:220px 1fr;gap:8px 16px}
+.detail-container dt{font-weight:700;color:var(--muted)}
+.detail-container dd{margin:0;color:var(--text);white-space:pre-wrap}
+
+/* Footer */
+.footer{text-align:center;color:var(--muted);font-size:13px;padding:12px 0}
+
+/* Responsive adjustments */
+@media (max-width:980px){
+  .search-controls input{width:52vw}
+  .row-grid{grid-template-columns: repeat(2, 1fr)}
+  .detail-container dl{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .search-controls input{width:84vw}
+  .row-grid{grid-template-columns:1fr}
+}
