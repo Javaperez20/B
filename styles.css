@@ -1,0 +1,316 @@
+:root{
+  /* Light theme */
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --muted: #6b7280;
+  --text: #111827;
+  --border: #e5e7eb;
+  --accent-1: #2563eb;
+  --card-radius: 12px;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-size: 18px;
+  --gap: 16px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background: linear-gradient(180deg,var(--bg), #ffffff);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  line-height:1.45;
+  overflow-y:auto;
+}
+
+/* Topbar now stacked content */
+.topbar{
+  display:block;
+  padding:18px 20px;
+  border-bottom:1px solid var(--border);
+  background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(250,250,250,0.9));
+  /* remove absolute-position dependency so header-right participates in flow */
+}
+
+/* Container that stacks every element vertically inside header */
+.header-stack{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-width:1200px;
+  margin:0 auto;
+  position: relative;
+}
+
+/* Title lines */
+.title-main{font-weight:700;font-size:20px;color:var(--text)}
+.title-sub{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* Header derecho (engranaje + nombre)
+   NOW: participate in normal flow and align to the right of the stack.
+   It's placed under the subtitle in the stack but aligned to the end,
+   preventing overlap on resize while keeping the same visual position. */
+.header-right {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  justify-self:end;
+  align-self:flex-end; /* push it to the right within the column stack */
+  margin-top:4px;
+}
+.icon-btn { background:transparent; border:none; font-size:20px; cursor:pointer; padding:6px; border-radius:8px; transition: background 120ms ease; }
+.icon-btn:hover { background: rgba(15,23,42,0.06); }
+.ejecutivo-name { font-weight:700; color:#0b3a66; font-size:0.95rem; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Generic header rows for control lines */
+.header-row{
+  display:flex;
+  align-items:center;
+  width:100%;
+}
+
+/* Spacer to push advanced toggle to the right */
+.spacer{flex:1 1 auto}
+
+/* Fuzzy toggle styling */
+.fuzzy-toggle{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:600}
+.fuzzy-toggle input{width:16px;height:16px}
+.header-fuzzy{flex:0 0 auto}
+
+/* Search line: input + clear button inline */
+.search-line{
+  display:flex;
+  gap:8px;
+  width:100%;
+  align-items:center;
+}
+
+/* Accessibility: visually hide label but keep available to screen readers */
+.sr-only{
+  position:absolute;
+  left:-9999px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
+/* Search input: flexible and responsive */
+.search-line input[type="search"]{
+  flex:1 1 auto;
+  min-width:0;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  font-size:16px;
+  outline:none;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.03);
+  max-width:900px;
+}
+.search-line input::placeholder{color:rgba(17,24,39,0.4)}
+
+/* Buttons inline with compact sizes on small screens */
+.btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent}
+.btn:focus{outline:2px solid rgba(37,99,235,0.18);outline-offset:2px}
+
+/* Preserve existing card and layout styles (kept mostly unchanged) */
+
+/* Layout main - use single column stack: cards then detail */
+.main{max-width:1200px;margin:24px auto;padding:0 20px;display:flex;flex-direction:column;gap:20px}
+
+/* Cards container - no internal scrollbars */
+.cards-container{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  overflow:visible;
+}
+
+/* ======== Card styles: clear structure ======== */
+.card-row{
+  display:block;
+  padding:14px;
+  border-radius:var(--card-radius);
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  box-shadow: 0 2px 6px rgba(16,24,40,0.03);
+  transition: transform .12s ease, box-shadow .12s ease;
+  position:relative;
+  overflow:visible;
+  cursor:pointer;
+}
+.card-row:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(16,24,40,0.08)}
+
+/* Left accent stripe via injected per-card style using data-accent-id */
+.card-accent::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:8px;
+  border-top-left-radius:var(--card-radius);
+  border-bottom-left-radius:var(--card-radius);
+  background:transparent;
+}
+
+/* Card header: title + subtitle (Caso + Tema) */
+.card-header{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.card-title{
+  font-size:16px;
+  font-weight:700;
+  color:var(--text);
+}
+.card-subtitle{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+/* Meta row: exact order requested
+   Tipo de Tarea, Motivo, Subavaloración, Estado */
+.card-meta{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+.meta-item{
+  font-size:13px;
+  color:var(--muted);
+  background:rgba(0,0,0,0.03);
+  padding:6px 8px;
+  border-radius:8px;
+  border:1px solid transparent;
+}
+
+/* Quick row (single row): Caso | Verificaciones | Observaciones */
+.card-quick-single{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap:10px 16px;
+  margin-top:12px;
+  align-items:start;
+}
+.card-quick-single .card-field .label{ font-size:12px; color:var(--muted); font-weight:700; }
+.card-quick-single .card-field .value{
+  font-size:14px;
+  color:var(--text);
+  margin-top:6px;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* detail section */
+.detail-section{padding:0}
+.detail-card{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+  background:var(--panel);
+  box-shadow: 0 4px 18px rgba(16,24,40,0.04);
+}
+.detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.detail-container dl{display:grid;grid-template-columns:220px 1fr;gap:8px 16px}
+.detail-container dt{font-weight:700;color:var(--muted)}
+.detail-container dd{margin:0;color:var(--text);white-space:pre-wrap}
+
+/* Footer */
+.footer{text-align:center;color:var(--muted);font-size:13px;padding:12px 0}
+
+/* Modal Ejecutivo (estilo profesional) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6,10,16,0.4);
+  z-index: 1200;
+  padding: 20px;
+}
+.modal-overlay[hidden] { display: none; }
+
+.modal-dialog {
+  width: 420px;
+  max-width: calc(100% - 40px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 30px 60px rgba(2,6,23,0.4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header { padding: 16px 20px; border-bottom: 1px solid rgba(15,23,42,0.04); }
+.modal-header h2 { margin: 0; font-size: 1.1rem; color:#0b2540; }
+
+.modal-body { padding: 14px 20px 20px 20px; }
+.ejecutivo-input-row { display:flex; gap:8px; align-items:center; margin-top:8px; }
+.ejecutivo-input-row input[type="text"] {
+  flex:1;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #d1d9e6;
+  background:#fafbfd;
+  font-weight:700;
+  font-size:0.95rem;
+}
+.ejecutivo-controls { display:flex; gap:6px; }
+.icon-small-btn { background:transparent; border:none; cursor:pointer; padding:6px; border-radius:8px; font-size:16px; }
+.icon-small-btn:hover { background: rgba(15,23,42,0.04); }
+
+.modal-footer { padding: 12px 16px; display:flex; gap:8px; justify-content:flex-end; border-top:1px solid rgba(15,23,42,0.04); }
+
+/* responsive modal */
+@media (max-width: 480px) {
+  .modal-dialog { width: 100%; height: auto; margin: 0 6px; }
+  /* header-right stays aligned to the right but with smaller margins */
+  .header-right { align-self:flex-end; margin-top:6px; }
+}
+
+/* Responsive adjustments */
+
+/* Medium screens: narrow input slightly, stack some card layouts */
+@media (max-width:980px){
+  .search-line input{max-width:70vw}
+  .card-quick-single{ grid-template-columns: 1fr; }
+  .detail-container dl{grid-template-columns:1fr}
+}
+
+/* Small screens: ensure neat stacking and compact controls */
+@media (max-width:640px){
+  .topbar{padding:12px 14px;}
+  .header-stack{gap:8px;}
+  .title-main{font-size:18px}
+  .title-sub{font-size:12px}
+  .search-line input{padding:10px 12px;font-size:15px}
+  .btn{padding:6px 10px;font-size:14px}
+  .fuzzy-toggle{font-size:14px}
+  .header-right { align-self:flex-end; }
+}
+
+/* Very small screens: force search-line elements to wrap if needed */
+@media (max-width:420px){
+  .search-line{
+    flex-direction:row;
+    gap:6px;
+    align-items:center;
+  }
+  .search-line input{flex:1 1 60%}
+  .btn{flex:0 0 auto}
+  .header-right { width:100%; justify-content:flex-end; }
+}

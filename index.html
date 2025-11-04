@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visor de Casos — Buscar por caso</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- SheetJS para leer Excel -->
+  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  <!-- Fuse.js para búsqueda difusa -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+</head>
+<body>
+  <header class="topbar" role="banner">
+
+    <!-- Ahora todo del header apilado: título, subtítulo, fila avanzada (derecha),
+         fila búsqueda: input + limpiar (en la misma línea) -->
+    <div class="header-stack">
+                <!-- Contenedor derecho en el header con botón de engranaje y nombre del Ejecutivo
+           (ahora apilado en el flujo del header y alineado a la derecha para evitar superposiciones) -->
+      <div class="header-right" aria-hidden="false">
+        <button id="gearBtn" class="icon-btn" aria-label="Configuración de Ejecutivo" title="Configuración de Ejecutivo" type="button">⚙️</button>
+        <span id="ejecutivoName" class="ejecutivo-name" aria-live="polite"></span>
+      </div>
+      <div class="title-main">Visor de Casos</div>
+      <div class="title-sub">Buscar por caso</div>
+
+
+
+      <div class="header-row header-row--controls">
+        <!-- Avanzada alineada a la derecha -->
+        <div class="spacer"></div>
+        <label class="fuzzy-toggle header-fuzzy">
+          <input id="fuzzyCheckbox" type="checkbox" />
+          <span class="fuzzy-label">Avanzada</span>
+        </label>
+      </div>
+
+      <div class="header-row header-row--search">
+        <label for="caseSearch" class="search-label sr-only">Buscar por caso</label>
+        <div class="search-line">
+          <input id="caseSearch" type="search" placeholder="Escribe texto y presiona Enter" autocomplete="off" />
+          <button id="clearBtn" class="btn ghost" title="Limpiar búsqueda">Limpiar</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" role="main">
+    <!-- Results rendered as card list (no internal scrollbars) -->
+    <section id="resultsSection" class="results-section" aria-label="Resultados">
+      <div id="cardsContainer" class="cards-container" aria-live="polite">
+        <!-- cards generated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Detail appears below the cards -->
+    <section id="detailSection" class="detail-section hidden" aria-hidden="true">
+      <div class="detail-card">
+        <div class="detail-header">
+          <h2>Detalle del caso</h2>
+          <!-- Botón reemplazado para subir al inicio -->
+          <button id="closeDetail" class="btn ghost">Ir arriba</button>
+        </div>
+        <div id="detailContainer" class="detail-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Ejecutivo -->
+  <div id="ejecutivoModal" class="modal-overlay" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="ejecutivo-title">
+      <div class="modal-header">
+        <h2 id="ejecutivo-title">Configuración del Ejecutivo</h2>
+      </div>
+      <div class="modal-body">
+        <div class="ejecutivo-input-row">
+          <input id="ejecutivoInput" type="text" placeholder="Nombre del Ejecutivo" />
+          <div class="ejecutivo-controls">
+            <button id="editEjecutivoBtn" class="icon-small-btn" title="Editar">✏️</button>
+            <button id="deleteEjecutivoBtn" class="icon-small-btn" title="Borrar">🗑️</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelEjecutivoBtn" class="btn ghost">Cancelar</button>
+        <button id="acceptEjecutivoBtn" class="btn">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" role="contentinfo">
+    <!-- <small>Cliente-side — coloque <code>data.xlsx</code> en la raíz del sitio.</small> -->
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
